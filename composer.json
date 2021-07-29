@@ -1,0 +1,64 @@
+{
+    "name": "chrissantiago82/datatable",
+    "description": "This package is used to handle datatable with bootstrap and livewire",
+    "keywords": [
+        "chrissantiago82",
+        "datatable"
+    ],
+    "homepage": "https://github.com/chrissantiago82/datatable",
+    "license": "MIT",
+    "type": "library",
+    "authors": [
+        {
+            "name": "Perla Moreno",
+            "email": "perlad0015@gmail.com",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": "^7.3|^8.0",
+        "illuminate/support": "^8.0",
+        "laravel/installer": "^4.2",
+        "laravel/ui": "^3.3",
+        "livewire/livewire": "^2.5",
+        "maatwebsite/excel": "^3.1",
+        "yajra/laravel-datatables-oracle": "^9.18",
+        "fideloper/proxy": "^4.4",
+        "fruitcake/laravel-cors": "^2.0",
+        "guzzlehttp/guzzle": "^7.0.1",
+        "laravel/framework": "^8.40",
+        "laravel/tinker": "^2.5"
+    },
+    "require-dev": {
+        "orchestra/testbench": "^6.0",
+        "phpunit/phpunit": "^9.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Chrissantiago82\\Datatable\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Chrissantiago82\\Datatable\\Tests\\": "tests"
+        }
+    },
+    "scripts": {
+        "test": "vendor/bin/phpunit",
+        "test-coverage": "vendor/bin/phpunit --coverage-html coverage"
+
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Chrissantiago82\\Datatable\\DatatableServiceProvider"
+            ],
+            "aliases": {
+                "Datatable": "Chrissantiago82\\Datatable\\DatatableFacade"
+            }
+        }
+    }
+}
