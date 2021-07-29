@@ -19,7 +19,5 @@ class DatatableServiceProvider extends ServiceProvider
         $this->loadViewsFrom(__DIR__.'/../resources/views/bootstrap', 'datatable');
 
     }
-
-
-
+    
 }
