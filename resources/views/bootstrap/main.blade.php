@@ -93,7 +93,7 @@
                          @elseif ($itemName['type'] == 'counter')
                              @include('datatable::counter-option', ['id' => $item->id])
                          @elseif ($itemName['type'] == 'lastRecord')
-                             @include('datatable.lastrecord-option', ['id' => $item->id])
+                             @include('datatable::lastrecord-option', ['id' => $item->id])
 
                          @elseif ($itemName['type'] == 'disable')
                             @include('datatable::status-option', ['optionKey' => $itemKey, 'itemValue' => $item->$itemKey, 'event' => $itemName['event'], 'id'=> $item->id])
