@@ -18,16 +18,9 @@
     "require": {
         "php": "^7.3|^8.0",
         "illuminate/support": "^8.0",
-        "laravel/installer": "^4.2",
-        "laravel/ui": "^3.3",
-        "livewire/livewire": "^2.5",
+        "livewire/livewire": "^2.4",
         "maatwebsite/excel": "^3.1",
-        "yajra/laravel-datatables-oracle": "^9.18",
-        "fideloper/proxy": "^4.4",
-        "fruitcake/laravel-cors": "^2.0",
-        "guzzlehttp/guzzle": "^7.0.1",
-        "laravel/framework": "^8.40",
-        "laravel/tinker": "^2.5"
+        "fideloper/proxy": "^4.4"
     },
     "require-dev": {
         "orchestra/testbench": "^6.0",
