@@ -54,7 +54,7 @@
             @foreach($Data as $itemKey => $itemName)
                 <th wire:click="sortBy(`{{$itemKey}}`)" style="cursor: pointer">
                     {{$itemName['columnName']}}
-                    @include('main::sort-icon', ['field'=> $itemKey])
+                    @include('datatable::sort-icon', ['field'=> $itemKey])
                 </th>
             @endforeach
         </tr>
@@ -91,18 +91,18 @@
                         @elseif ($itemName['type'] == 'number')
                             <td>{{number_format((float)$val,2,'.',"'")}}</td>
                          @elseif ($itemName['type'] == 'counter')
-                             @include('main::counter-option', ['id' => $item->id])
+                             @include('datatable::counter-option', ['id' => $item->id])
                          @elseif ($itemName['type'] == 'lastRecord')
-                             @include('main.lastrecord-option', ['id' => $item->id])
+                             @include('datatable.lastrecord-option', ['id' => $item->id])
 
                          @elseif ($itemName['type'] == 'disable')
-                            @include('main::status-option', ['optionKey' => $itemKey, 'itemValue' => $item->$itemKey, 'event' => $itemName['event'], 'id'=> $item->id])
+                            @include('datatable::status-option', ['optionKey' => $itemKey, 'itemValue' => $item->$itemKey, 'event' => $itemName['event'], 'id'=> $item->id])
                         @endif
 
                     @endforeach
 
                     @if($showOptions)
-                        @include('main::extra-options', ['id'=> $item->id])
+                        @include('datatable::extra-options', ['id'=> $item->id])
                     @endif
 
             </tr>

@@ -16,7 +16,7 @@ class DatatableServiceProvider extends ServiceProvider
 
         Livewire::component('main', Main::class);
 
-        $this->loadViewsFrom(__DIR__.'/../resources/views/datatable', 'table');
+        $this->loadViewsFrom(__DIR__.'/../resources/views/bootstrap', 'datatable');
 
     }
     
