@@ -10,6 +10,8 @@
                         10
                     @elseif($perPage == '20')
                         20
+                    @elseif($perPage == '30')
+                        30
                     @elseif($perPage == '100')
                         100
                     @endif

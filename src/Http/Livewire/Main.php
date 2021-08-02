@@ -39,7 +39,7 @@ class Main extends Component
 
     public function mount($tableArr = null, $query = null)
     {
-        $this->perPage = 10;
+        $this->perPage = 30;
         $this->tableStruct();
         $this->getFilterFromSession();
     }
@@ -243,7 +243,9 @@ class Main extends Component
     {
         $query = $this->queryStruct();
 
-        return Excel::download(new ExportExcelClass($query, $this->Data),now()->toDateString() . ' excel.xlsx');
+        //Full Collection
+
+        return Excel::download(new ExportExcelClass('full_collection', $query),now()->toDateString() . ' excel.xlsx');
     }
 
     public function saveFilterToSession()
