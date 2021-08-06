@@ -13,63 +13,64 @@ class ExportExcelClass implements FromCollection, WithHeadings
     private $type;
     private $collection;
     private $headings;
+    private $collectionHeadings;
 
     public function __construct($type, $collection_to_export, $collection_headings = null) {
-        
         $this->type = $type;
         $this->collection = $collection_to_export;
         $this->headings = $collection_headings;
+
+        $this->getExportedCollection();
+    }
+
+    public function getExportedCollection()
+    {
+        $collectionKeys = array_keys($this->headings);
+
+        $subCollection = $this->collection->map(function ($collectionItem, $collectionKey) use ($collectionKeys) {
+            $result = [];
+
+            foreach ($this->headings as $itemKey => $itemValue) {
+                $collection = Str::of($itemKey)->explode('.');
+                $val = $collectionItem;
+
+                foreach ($collection as $rel) {
+                    if ($val === null) {
+                        break;
+                    }
+                    $val = optional($val)->$rel;
+                    $result[$itemKey] = $val;
+                }
+            }
+            $collectionResult = collect($result);
+
+            if($this->type == 'full_collection') {
+                $mergeCollection = collect($collectionItem)->except($collectionKeys);
+
+                $fullCollection = $collectionResult->merge($mergeCollection);
+                $this->collectionHeadings = $fullCollection->keys()->toArray();
+
+                return $fullCollection->all();
+
+            }
+            elseif($this->type == 'merged_collection')
+            {
+                return $collectionResult->all();
+            }
+
+        });
+
+        $this->headings = $this->collectionHeadings;
+        $this->collection = $subCollection;
     }
 
     public function collection()
     {
-        if($this->type == 'full_collection') {
-            return $this->collection;
-
-        }elseif($this->type == 'merged_collection')
-        {
-            $subCollection = $this->collection->map(function ($user) {
-                $result = [];
-
-                foreach ($this->headings as $itemKey => $itemValue) {
-                    $collection = Str::of($itemKey)->explode('.');
-                    $val = $user;
-
-                    foreach ($collection as $rel) {
-                        if ($val === null) {
-                            break;
-                        }
-                        $val = optional($val)->$rel;
-                        $result[$itemKey] = $val;
-                    }
-
-                }
-                return collect($result)
-                    ->all();
-            });
-
-            return $subCollection;
-        }
-
+        return $this->collection;
     }
 
     public function headings(): array
     {
-        if($this->type == 'full_collection')
-        {
-            return array_keys($this->collection->first()->toArray());
-
-        }elseif ($this->type == 'merged_collection') {
-
-
-            $headingsResult = [];
-            foreach ($this->headings as $items) {
-                if ($items['columnName'] !== null) {
-                    $headingsResult[] = $items['columnName'];
-                }
-            }
-
-            return $headingsResult;
-        }
+        return $this->headings;
     }
 }

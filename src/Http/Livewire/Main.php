@@ -245,7 +245,7 @@ class Main extends Component
 
         //Full Collection
 
-        return Excel::download(new ExportExcelClass('full_collection', $query),now()->toDateString() . ' excel.xlsx');
+        return Excel::download(new ExportExcelClass('full_collection', $query, $this->Data),now()->toDateString() . ' excel.xlsx');
     }
 
     public function saveFilterToSession()
