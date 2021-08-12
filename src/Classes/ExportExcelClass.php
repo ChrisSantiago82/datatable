@@ -14,11 +14,13 @@ class ExportExcelClass implements FromCollection, WithHeadings
     private $collection;
     private $headings;
     private $collectionHeadings;
+    private $exceptions;
 
-    public function __construct($type, $collection_to_export, $collection_headings = null) {
+    public function __construct($type, $collection_to_export, $collection_headings = null, $exceptions = null) {
         $this->type = $type;
         $this->collection = $collection_to_export;
         $this->headings = $collection_headings;
+        $this->exceptions = $exceptions;
 
         $this->getExportedCollection();
     }
@@ -45,10 +47,7 @@ class ExportExcelClass implements FromCollection, WithHeadings
             $collectionResult = collect($result);
 
             if($this->type == 'full_collection') {
-                $relations = array_keys($collectionItem->getRelations());
-                $relationpairs = array_map('strtolower', $relations);
-
-                $mergeCollection = collect($collectionItem)->except($collectionKeys)->except($relationpairs);
+                $mergeCollection = collect($collectionItem)->except($collectionKeys)->except($this->exceptions);
 
                 $fullCollection = $collectionResult->merge($mergeCollection);
                 $this->collectionHeadings = $fullCollection->keys()->toArray();
