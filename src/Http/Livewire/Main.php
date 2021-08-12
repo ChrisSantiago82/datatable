@@ -21,6 +21,7 @@ class Main extends Component
     public $sortDirection = true;
     public $sortArr = [];
     public $Data = [];
+    public $Exceptions = [];
     public $ExtraData;
     public $StatusData;
     public $query;
@@ -71,6 +72,11 @@ class Main extends Component
             if($itemKey == 'ExcelButton')
             {
                 $this->showExcel = $itemArr;
+            }
+
+            if($itemKey == 'ExcelExceptions')
+            {
+                $this->Exceptions = $itemArr;
             }
 
             if($itemKey == 'Options')
@@ -245,7 +251,7 @@ class Main extends Component
 
         //Full Collection
 
-        return Excel::download(new ExportExcelClass('full_collection', $query, $this->Data),now()->toDateString() . ' excel.xlsx');
+        return Excel::download(new ExportExcelClass('full_collection', $query, $this->Data, $this->Exceptions),now()->toDateString() . ' excel.xlsx');
     }
 
     public function saveFilterToSession()

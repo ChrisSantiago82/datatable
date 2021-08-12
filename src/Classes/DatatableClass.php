@@ -96,6 +96,11 @@ class DatatableClass
         $this->Result['ExcelButton'] = $value;
     }
 
+    public function excelExceptions($key, $value)
+    {
+        $this->Result['ExcelExceptions'][$key] = $value;
+    }
+
     public function makeExcel($query)
     {
         return $query;
