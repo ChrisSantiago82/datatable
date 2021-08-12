@@ -45,10 +45,14 @@ class ExportExcelClass implements FromCollection, WithHeadings
             $collectionResult = collect($result);
 
             if($this->type == 'full_collection') {
-                $mergeCollection = collect($collectionItem)->except($collectionKeys);
+                $relations = array_keys($collectionItem->getRelations());
+                $relationpairs = array_map('strtolower', $relations);
+
+                $mergeCollection = collect($collectionItem)->except($collectionKeys)->except($relationpairs);
 
                 $fullCollection = $collectionResult->merge($mergeCollection);
                 $this->collectionHeadings = $fullCollection->keys()->toArray();
+
 
                 return $fullCollection->all();
 
