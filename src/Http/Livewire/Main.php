@@ -157,8 +157,14 @@ class Main extends Component
             }
         }
 
-        return $newQuery;
+        //Load Counts
+        if (isset($this->tableArr['withCount'])) {
+            foreach ($this->tableArr['withCount'] as $withcount) {
+                $newQuery->loadCount($withcount);
+            }
+        }
 
+        return $newQuery;
     }
 
     public function loadDataCounter()
@@ -263,6 +269,7 @@ class Main extends Component
     {
         $this->search = Session::get('tb_'.$this->tableArr['key'], '');
     }
+
 
     public function render()
     {
