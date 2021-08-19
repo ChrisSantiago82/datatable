@@ -256,12 +256,12 @@ class Main extends Component
 
     public function saveFilterToSession()
     {
-        Session::put('search_filter', $this->search);
+        Session::put('tb_'.$this->tableArr['key'], $this->search);
     }
 
     public function getFilterFromSession()
     {
-        $this->search = Session::get('search_filter', '');
+        $this->search = Session::get('tb_'.$this->tableArr['key'], '');
     }
 
     public function render()

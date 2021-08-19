@@ -7,6 +7,7 @@ namespace Chrissantiago82\Datatable\Classes;
 class DatatableClass
 {
     public $Result = [];
+    protected $hasString;
 
     public function tableColumn($key, $columnName)
     {
@@ -15,8 +16,15 @@ class DatatableClass
         $this->Result['Columns'][$key]['format'] = null;
         $this->Result['Columns'][$key]['event'] = null;
         $this->Result['Columns'][$key]['value'] = null;
-
+        $this->buildKey($columnName);
     }
+
+    protected function buildKey($columnName)
+    {
+        $this->hasString = $this->hasString.$columnName;
+        $this->Result['key'] = hash('md5', $this->hasString);
+    }
+
 
     public function tableColumnType($key, $type)
     {
