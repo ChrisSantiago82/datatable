@@ -6,6 +6,6 @@ class Datatable
 {
     function __construct()
     {
-        dd('hello');
+        //
     }
 }
