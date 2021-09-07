@@ -115,6 +115,11 @@ class DatatableClass
         $this->Result['ExcelExceptions'][$key] = $value;
     }
 
+    public function defaultSortableItem($key, $value)
+    {
+        $this->Result['DefaultSort'][$key] = $value;
+    }
+
     public function makeExcel($query)
     {
         return $query;

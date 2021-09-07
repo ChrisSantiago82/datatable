@@ -43,6 +43,7 @@ class Main extends Component
         $this->perPage = 30;
         $this->tableStruct();
         $this->getFilterFromSession();
+        $this->getFilterSortFromSession();
     }
 
     public function tableStruct()
@@ -92,6 +93,14 @@ class Main extends Component
             if($itemKey == 'LastRecord')
             {
                 $this->loadLastRecord();
+            }
+
+            if($itemKey == 'DefaultSort')
+            {
+                $firstKey = array_key_first($itemArr);
+                $this->sortDirection = reset($itemArr);
+
+                $this->sortBy($firstKey);
             }
         }
 
@@ -225,6 +234,7 @@ class Main extends Component
         $this->sortBy = $field;
 
         $this->queryStruct();
+        $this->saveFilterSortToSession();
 
         return $this->sortBy;
     }
@@ -270,6 +280,19 @@ class Main extends Component
         $this->search = Session::get('tb_'.$this->tableArr['key'], '');
     }
 
+    public function saveFilterSortToSession()
+    {
+        Session::put('sort_'.$this->tableArr['key'], $this->sortBy);
+        Session::put('sort_d'.$this->tableArr['key'], $this->sortDirection);
+
+    }
+
+    public function getFilterSortFromSession()
+    {
+        $sortBy = Session::get('sort_'.$this->tableArr['key'], '');
+        $sortDirection = Session::get('sort_d'.$this->tableArr['key'], '');
+
+    }
 
     public function render()
     {
