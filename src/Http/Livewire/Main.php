@@ -95,7 +95,7 @@ class Main extends Component
                 $this->loadLastRecord();
             }
 
-            if($itemKey == 'DefaultSort')
+            if($itemKey == 'DefaultSort' And $this->sortDirection == '' And $this->sortBy == '')
             {
                 $firstKey = array_key_first($itemArr);
                 $this->sortDirection = reset($itemArr);
@@ -289,8 +289,8 @@ class Main extends Component
 
     public function getFilterSortFromSession()
     {
-        $sortBy = Session::get('sort_'.$this->tableArr['key'], '');
-        $sortDirection = Session::get('sort_d'.$this->tableArr['key'], '');
+        $this->sortBy = Session::get('sort_'.$this->tableArr['key'], '');
+        $this->sortDirection = Session::get('sort_d'.$this->tableArr['key'], '');
 
     }
 
