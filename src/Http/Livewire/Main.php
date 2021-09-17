@@ -18,7 +18,7 @@ class Main extends Component
     public $search = '';
     public $perPage;
     public $sortBy = '';
-    public $sortDirection = true;
+    public $sortDirection;
     public $sortArr = [];
     public $Data = [];
     public $Exceptions = [];
@@ -41,9 +41,9 @@ class Main extends Component
     public function mount($tableArr = null, $query = null)
     {
         $this->perPage = 30;
+        $this->getFilterSortFromSession();
         $this->tableStruct();
         $this->getFilterFromSession();
-        $this->getFilterSortFromSession();
     }
 
     public function tableStruct()
