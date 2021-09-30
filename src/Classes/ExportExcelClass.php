@@ -14,12 +14,14 @@ class ExportExcelClass implements FromCollection, WithHeadings
     private $collection;
     private $headings;
     private $collectionHeadings;
+    private $collection_formats;
     private $exceptions;
 
-    public function __construct($type, $collection_to_export, $collection_headings = null, $exceptions = null) {
+    public function __construct($type, $collection_to_export, $collection_headings = null, $exceptions = null, $collection_format = null) {
         $this->type = $type;
         $this->collection = $collection_to_export;
         $this->headings = $collection_headings;
+        $this->collection_formats = $collection_format;
         $this->exceptions = $exceptions;
 
         $this->getExportedCollection();
@@ -41,10 +43,26 @@ class ExportExcelClass implements FromCollection, WithHeadings
                         break;
                     }
                     $val = optional($val)->$rel;
-                    $result[$itemKey] = $val;
+
+                    if($itemValue['type'] == 'date')
+                    {
+                        $result[$itemKey] = $val->format($itemValue['format']);
+                    }else{
+                        $result[$itemKey] = $val;
+                    }
                 }
+
             }
             $collectionResult = collect($result);
+
+            foreach ($this->collection_formats as $keyFormat => $value)
+            {
+                if($value['type'] == 'date')
+                {
+                    $test = $collectionItem->$keyFormat->format($value['format']);
+                    $collectionItem->$keyFormat = $test;
+                }
+            }
 
             if($this->type == 'full_collection') {
                 $exceptions = array_keys($this->exceptions);

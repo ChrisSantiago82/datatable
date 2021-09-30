@@ -115,6 +115,12 @@ class DatatableClass
         $this->Result['ExcelExceptions'][$key] = $value;
     }
 
+    public function excelDateFormat($key, $format)
+    {
+        $this->Result['ExcelFormat'][$key]['format'] = $format;
+        $this->Result['ExcelFormat'][$key]['type'] = 'date';
+    }
+
     public function defaultSortableItem($key, $value)
     {
         $this->Result['DefaultSort'][$key] = $value;

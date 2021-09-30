@@ -31,7 +31,7 @@ class Main extends Component
     public $tableArr = [];
     public $showOptions;
     public $counterResult = [];
-    public $lastRecord = [];
+    public $excelFormat = [];
 
 
     protected $listeners = ['sortBy', 'loadDataTable', 'Pagination'];
@@ -90,9 +90,9 @@ class Main extends Component
                 $this->loadDataCounter();
             }
 
-            if($itemKey == 'LastRecord')
+            if($itemKey == 'ExcelFormat')
             {
-                $this->loadLastRecord();
+                $this->excelFormat = $itemArr;
             }
 
             if($itemKey == 'DefaultSort' And $this->sortDirection == '' And $this->sortBy == '')
@@ -193,30 +193,6 @@ class Main extends Component
         }
     }
 
-    public function loadLastRecord()
-    {
-        foreach ($this->Data as $itemKey => $dataValue)
-        {
-            if($dataValue['type'] == 'lastRecord')
-            {
-                $lastValue= $dataValue['value'];
-
-                foreach ($this->query as $query)
-                {
-                    $lastRecord = $query->$lastValue->last();
-
-                    if($lastRecord != null)
-                    {
-                        $recordValue = $lastRecord->$itemKey->format($dataValue['format']);
-
-                        $this->lastRecord[$query->id] = $recordValue;
-                    }
-                }
-            }
-
-        }
-    }
-
     public function Pagination($page)
     {
         $this->perPage = $page;
@@ -267,7 +243,7 @@ class Main extends Component
 
         //Full Collection
 
-        return Excel::download(new ExportExcelClass('full_collection', $query, $this->Data, $this->Exceptions),now()->toDateString() . ' excel.xlsx');
+        return Excel::download(new ExportExcelClass('full_collection', $query, $this->Data, $this->Exceptions, $this->excelFormat),now()->toDateString() . ' excel.xlsx');
     }
 
     public function saveFilterToSession()
