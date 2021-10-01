@@ -55,19 +55,20 @@ class ExportExcelClass implements FromCollection, WithHeadings
             }
             $collectionResult = collect($result);
 
+            $newCollectionItem = collect($collectionItem);
+
             foreach ($this->collection_formats as $keyFormat => $value)
             {
                 if($value['type'] == 'date')
                 {
-                    $test = $collectionItem->$keyFormat->format($value['format']);
-                    $collectionItem->$keyFormat = $test;
+                    $newCollectionItem[$keyFormat] = $collectionItem->$keyFormat->format($value['format']);
                 }
             }
 
             if($this->type == 'full_collection') {
                 $exceptions = array_keys($this->exceptions);
 
-                $mergeCollection = collect($collectionItem)->except($collectionKeys)->except($exceptions);
+                $mergeCollection = collect($newCollectionItem)->except($collectionKeys)->except($exceptions);
 
                 $fullCollection = $collectionResult->merge($mergeCollection);
                 $this->collectionHeadings = $fullCollection->keys()->toArray();
