@@ -4,28 +4,31 @@
             <span>Show: &nbsp;</span>
             <div class="col-md-2" style="margin-top: 15px">
                 <a class="btn btn-light btn-xs dropdown-toggle" style="width: 140px;margin-bottom: 20px;" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="width: 20px">
-                    @if($perPage == '2')
-                        2
-                    @elseif($perPage == '10')
+                    @if($perPage == '10')
                         10
                     @elseif($perPage == '20')
                         20
                     @elseif($perPage == '30')
                         30
+                    @elseif($perPage == '50')
+                        50
                     @elseif($perPage == '100')
                         100
                     @endif
                 </a>
 
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                    <a class="dropdown-item" href="javascript:window.livewire.emit('Pagination','2')" style="margin-top:10px">
-                        <span>2</span>
-                    </a>
                     <a class="dropdown-item" href="javascript:window.livewire.emit('Pagination','10')" style="margin-top:10px">
                         <span>10</span>
                     </a>
                     <a class="dropdown-item" href="javascript:window.livewire.emit('Pagination','20')" style="margin-top:10px">
                         <span>20</span>
+                    </a>
+                    <a class="dropdown-item" href="javascript:window.livewire.emit('Pagination','30')" style="margin-top:10px">
+                        <span>30</span>
+                    </a>
+                    <a class="dropdown-item" href="javascript:window.livewire.emit('Pagination','50')" style="margin-top:10px">
+                        <span>50</span>
                     </a>
                     <a class="dropdown-item" href="javascript:window.livewire.emit('Pagination','100')" style="margin-top:10px">
                         <span>100</span>
