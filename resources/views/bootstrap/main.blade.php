@@ -56,7 +56,11 @@
 
         <thead>
         <tr>
-            @foreach($Data as $itemKey => $itemName)
+        @if($OptionsPosition == 'front')
+            <th></th>
+        @endif
+
+        @foreach($Data as $itemKey => $itemName)
                 <th wire:click="sortBy(`{{$itemKey}}`)" style="cursor: pointer">
                     {{$itemName['columnName']}}
                     @include('datatable::sort-icon', ['field'=> $itemKey])
@@ -69,6 +73,12 @@
         <tbody>
         @foreach($dataResult as $item)
             <tr wire:key="datatable-{{$item->id}}">
+                @if($OptionsPosition == 'front')
+                    @if($showOptions)
+                        @include('datatable::extra-options', ['id'=> $item->id])
+                    @endif
+                @endif
+
                 @foreach($Data as $itemKey => $itemName)
                      @if (Str::contains($itemKey, '.'))
                             @php
@@ -106,9 +116,11 @@
 
                     @endforeach
 
+                @if($OptionsPosition == 'end')
                     @if($showOptions)
                         @include('datatable::extra-options', ['id'=> $item->id])
                     @endif
+                @endif
 
             </tr>
         @endforeach

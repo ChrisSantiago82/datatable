@@ -32,6 +32,7 @@ class Main extends Component
     public $showOptions;
     public $counterResult = [];
     public $excelFormat = [];
+    public $OptionsPosition;
 
 
     protected $listeners = ['sortBy', 'loadDataTable', 'Pagination'];
@@ -83,6 +84,11 @@ class Main extends Component
             if($itemKey == 'Options')
             {
                 $this->showOptions = $itemArr;
+            }
+
+            if($itemKey == 'Position')
+            {
+                $this->OptionsPosition = $itemArr;
             }
 
             if($itemKey == 'Counter')

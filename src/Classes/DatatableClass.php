@@ -95,6 +95,11 @@ class DatatableClass
         $this->Result['Options'] = $value;
     }
 
+    public function tablePositionOptions($value)
+    {
+        $this->Result['Position'] = $value;
+    }
+
     public function tableButton($key, $option, $value)
     {
         $this->Result['Buttons'][$key][$option] = $value;
