@@ -26,7 +26,6 @@ class Main extends Component
     public $StatusData;
     public $query;
     public $queryResult;
-    public $FilterData;
     public $showExcel;
     public $tableArr = [];
     public $showOptions;
@@ -34,12 +33,14 @@ class Main extends Component
     public $excelFormat = [];
     public $OptionsPosition;
 
+    public $filter = [];
+
 
     protected $listeners = ['sortBy', 'loadDataTable', 'Pagination'];
 
     protected $paginationTheme = 'bootstrap';
 
-    public function mount($tableArr = null, $query = null)
+    public function mount($tableArr = null, $query = null, $filter = null)
     {
         $this->perPage = 30;
         $this->getFilterSortFromSession();
@@ -64,11 +65,6 @@ class Main extends Component
             if($itemKey == 'Status')
             {
                 $this->StatusData = $itemArr;
-            }
-
-            if($itemKey == 'Filters')
-            {
-                $this->FilterData = $itemArr;
             }
 
             if($itemKey == 'ExcelButton')
@@ -159,9 +155,9 @@ class Main extends Component
             });
         }
 
-        if($this->FilterData != null)
+        if($this->filter != null)
         {
-            foreach ($this->FilterData as $itemKey => $itemValue) {
+            foreach ($this->filter as $itemKey => $itemValue) {
                 if($itemValue !== null)
                 {
                     $newQuery = $newQuery->where($itemKey, '=', $itemValue);
@@ -229,7 +225,7 @@ class Main extends Component
 
     public function loadDataTable($filterData)
     {
-        $this->FilterData = $filterData;
+        $this->filter = $filterData;
         $this->queryStruct();
     }
 

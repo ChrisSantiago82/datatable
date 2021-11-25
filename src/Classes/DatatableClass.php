@@ -105,11 +105,6 @@ class DatatableClass
         $this->Result['Buttons'][$key][$option] = $value;
     }
 
-    public function tableFilter($key, $value)
-    {
-        $this->Result['Filters'][$key] = $value;
-    }
-
     public function excelButton($value)
     {
         $this->Result['ExcelButton'] = $value;
