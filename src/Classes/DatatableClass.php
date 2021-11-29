@@ -16,6 +16,7 @@ class DatatableClass
         $this->Result['Columns'][$key]['format'] = null;
         $this->Result['Columns'][$key]['event'] = null;
         $this->Result['Columns'][$key]['value'] = null;
+        $this->Result['Columns'][$key]['limit'] = null;
         $this->buildKey($columnName);
     }
 
@@ -36,6 +37,11 @@ class DatatableClass
         $this->Result['Columns'][$key]['format'] = $format;
     }
 
+    public function tableColumnLimit($key, $limit)
+    {
+        $this->Result['Columns'][$key]['type'] = 'limit';
+        $this->Result['Columns'][$key]['limit'] = $limit;
+    }
 
     public function formatDate($key, $format)
     {

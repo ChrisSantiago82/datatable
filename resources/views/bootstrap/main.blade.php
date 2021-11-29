@@ -107,6 +107,8 @@
 
                         @if ($itemName['type'] === null)
                             <td>{{$val}}</td>
+                         @elseif ($itemName['type'] == 'limit')
+                             <td>{{Str::limit($val, $itemName['limit'])}}</td>
                         @elseif ($itemName['type'] == 'date')
                             <td>{{optional($val)->format($itemName['format'])}}</td>
                         @elseif ($itemName['type'] == 'email')
