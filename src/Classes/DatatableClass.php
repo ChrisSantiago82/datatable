@@ -55,6 +55,14 @@ class DatatableClass
         $this->Result['Columns'][$key]['format'] = $format;
     }
 
+    public function formatLink($key, $event, $title)
+    {
+        $this->Result['Columns'][$key]['type'] = 'link';
+        $this->Result['Columns'][$key]['event'] = $event;
+        $this->Result['Columns'][$key]['title'] = $title;
+    }
+
+
     public function formatDisableBtn($key, $event)
     {
         $this->Result['Columns'][$key]['type'] = 'disable';

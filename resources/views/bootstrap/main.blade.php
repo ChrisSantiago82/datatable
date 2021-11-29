@@ -61,10 +61,18 @@
         @endif
 
         @foreach($Data as $itemKey => $itemName)
-                <th wire:click="sortBy(`{{$itemKey}}`)" style="cursor: pointer">
-                    {{$itemName['columnName']}}
-                    @include('datatable::sort-icon', ['field'=> $itemKey])
-                </th>
+                @if ($itemName['type'] == 'number')
+
+                    <th style="text-align: right" wire:click="sortBy(`{{$itemKey}}`)" style="cursor: pointer">
+                        {{$itemName['columnName']}}
+                        @include('datatable::sort-icon', ['field'=> $itemKey])
+                    </th>
+                @else
+                    <th wire:click="sortBy(`{{$itemKey}}`)" style="cursor: pointer">
+                        {{$itemName['columnName']}}
+                        @include('datatable::sort-icon', ['field'=> $itemKey])
+                    </th>
+                @endif
             @endforeach
         </tr>
 
@@ -104,7 +112,13 @@
                         @elseif ($itemName['type'] == 'email')
                             <td><a href="mailto:{{$val}}" target="_top">{{$val}}</a></td>
                         @elseif ($itemName['type'] == 'number')
-                            <td>{{number_format((float)$val,2,'.',"'")}}</td>
+                            <td style="text-align: right">{{number_format((float)$val,2,'.',"'")}}</td>
+                         @elseif ($itemName['type'] == 'link')
+                             <td style="color:#0e1950;  text-decoration: underline;">
+                                 <a style="padding-right: 15px;cursor: pointer;" wire:click="emitOptions(`{{$itemName['event']}}`, {{$item->id}})" data-bs-toggle="tooltip" data-bs-placement="top" title="{{$itemName['title']}}">
+                                     {{$val}}
+                                 </a>
+                             </td>
                          @elseif ($itemName['type'] == 'counter')
                              @include('datatable::counter-option', ['id' => $item->id])
                          @elseif ($itemName['type'] == 'lastRecord')
