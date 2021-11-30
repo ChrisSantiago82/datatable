@@ -17,10 +17,11 @@
     ],
     "require": {
         "php": "^7.3|^8.0",
+        "fideloper/proxy": "^4.4",
         "illuminate/support": "^8.0",
+        "laravie/serialize-queries": "^1.0",
         "livewire/livewire": "^2.4",
-        "maatwebsite/excel": "^3.1",
-        "fideloper/proxy": "^4.4"
+        "maatwebsite/excel": "^3.1"
     },
     "require-dev": {
         "orchestra/testbench": "^6.0",
