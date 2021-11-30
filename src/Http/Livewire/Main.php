@@ -9,6 +9,8 @@ use Illuminate\Support\Str;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Maatwebsite\Excel\Facades\Excel;
+use Laravie\SerializesQuery\Eloquent;
+use Illuminate\Support\Facades\Crypt;
 
 class Main extends Component
 {
@@ -50,55 +52,44 @@ class Main extends Component
 
     public function tableStruct()
     {
-        foreach ($this->tableArr as $itemKey => $itemArr)
-        {
-            if($itemKey == 'Columns')
-            {
+        foreach ($this->tableArr as $itemKey => $itemArr) {
+            if ($itemKey == 'Columns') {
                 $this->Data = $itemArr;
             }
 
-            if($itemKey == 'Buttons')
-            {
+            if ($itemKey == 'Buttons') {
                 $this->ExtraData = $itemArr;
             }
 
-            if($itemKey == 'Status')
-            {
+            if ($itemKey == 'Status') {
                 $this->StatusData = $itemArr;
             }
 
-            if($itemKey == 'ExcelButton')
-            {
+            if ($itemKey == 'ExcelButton') {
                 $this->showExcel = $itemArr;
             }
 
-            if($itemKey == 'ExcelExceptions')
-            {
+            if ($itemKey == 'ExcelExceptions') {
                 $this->Exceptions = $itemArr;
             }
 
-            if($itemKey == 'Options')
-            {
+            if ($itemKey == 'Options') {
                 $this->showOptions = $itemArr;
             }
 
-            if($itemKey == 'Position')
-            {
+            if ($itemKey == 'Position') {
                 $this->OptionsPosition = $itemArr;
             }
 
-            if($itemKey == 'Counter')
-            {
+            if ($itemKey == 'Counter') {
                 $this->loadDataCounter();
             }
 
-            if($itemKey == 'ExcelFormat')
-            {
+            if ($itemKey == 'ExcelFormat') {
                 $this->excelFormat = $itemArr;
             }
 
-            if($itemKey == 'DefaultSort' And $this->sortDirection == '' And $this->sortBy == '')
-            {
+            if ($itemKey == 'DefaultSort' and $this->sortDirection == '' and $this->sortBy == '') {
                 $firstKey = array_key_first($itemArr);
                 $this->sortDirection = reset($itemArr);
 
@@ -110,20 +101,22 @@ class Main extends Component
 
     public function queryStruct()
     {
+        return;
+
         $newQuery = $this->queryResult;
 
-        if($this->sortBy !== ''){
-            if($this->sortDirection == 'asc'){
+        if ($this->sortBy !== '') {
+            if ($this->sortDirection == 'asc') {
                 $newQuery = $this->query->sortBy($this->sortBy, SORT_NATURAL | SORT_FLAG_CASE);
 
-            }else{
+            } else {
                 $newQuery = $this->query->sortByDesc($this->sortBy, SORT_NATURAL | SORT_FLAG_CASE);
             }
-        }else{
+        } else {
             $newQuery = $this->query->sortBy('id');
         }
 
-        if ($this->search !== null AND $this->search != '') {
+        if ($this->search !== null and $this->search != '') {
 
             $newQuery = $newQuery->filter(function ($value, $key) {
 
@@ -155,13 +148,11 @@ class Main extends Component
             });
         }
 
-        if($this->filter != null)
-        {
+        if ($this->filter != null) {
             foreach ($this->filter as $itemKey => $itemValue) {
-                if($itemValue !== null)
-                {
+                if ($itemValue !== null) {
                     $newQuery = $newQuery->where($itemKey, '=', $itemValue);
-                }else{
+                } else {
                     $newQuery = $newQuery->where($itemKey, '!=', $itemValue);
                 }
 
@@ -180,14 +171,11 @@ class Main extends Component
 
     public function loadDataCounter()
     {
-        foreach ($this->Data as $itemKey => $dataValue)
-        {
-            if($dataValue['type'] == 'counter')
-            {
-                $counterData= $dataValue['value'];
+        foreach ($this->Data as $itemKey => $dataValue) {
+            if ($dataValue['type'] == 'counter') {
+                $counterData = $dataValue['value'];
 
-                foreach ($this->query as $query)
-                {
+                foreach ($this->query as $query) {
                     $this->counterResult[$query->$itemKey] = $query->$counterData->count();
                 }
             }
@@ -203,9 +191,9 @@ class Main extends Component
 
     public function sortBy($field)
     {
-        if($this->sortDirection == 'asc'){
+        if ($this->sortDirection == 'asc') {
             $this->sortDirection = 'desc';
-        }else{
+        } else {
             $this->sortDirection = 'asc';
         }
 
@@ -220,13 +208,11 @@ class Main extends Component
     public function updatedSearch()
     {
         $this->saveFilterToSession();
-        $this->queryStruct();
     }
 
     public function loadDataTable($filterData)
     {
         $this->filter = $filterData;
-        $this->queryStruct();
     }
 
     public function emitOptions($method, $id)
@@ -245,46 +231,76 @@ class Main extends Component
 
         //Full Collection
 
-        return Excel::download(new ExportExcelClass('full_collection', $query, $this->Data, $this->Exceptions, $this->excelFormat),now()->toDateString() . ' excel.xlsx');
+        return Excel::download(new ExportExcelClass('full_collection', $query, $this->Data, $this->Exceptions, $this->excelFormat), now()->toDateString() . ' excel.xlsx');
     }
 
     public function saveFilterToSession()
     {
-        Session::put('tb_'.$this->tableArr['key'], $this->search);
+        Session::put('tb_' . $this->tableArr['key'], $this->search);
     }
 
     public function getFilterFromSession()
     {
-        $this->search = Session::get('tb_'.$this->tableArr['key'], '');
+        $this->search = Session::get('tb_' . $this->tableArr['key'], '');
     }
 
     public function saveFilterSortToSession()
     {
-        Session::put('sort_'.$this->tableArr['key'], $this->sortBy);
-        Session::put('sort_d'.$this->tableArr['key'], $this->sortDirection);
+        Session::put('sort_' . $this->tableArr['key'], $this->sortBy);
+        Session::put('sort_d' . $this->tableArr['key'], $this->sortDirection);
 
     }
 
     public function getFilterSortFromSession()
     {
-        $this->sortBy = Session::get('sort_'.$this->tableArr['key'], '');
-        $this->sortDirection = Session::get('sort_d'.$this->tableArr['key'], '');
+        $this->sortBy = Session::get('sort_' . $this->tableArr['key'], '');
+        $this->sortDirection = Session::get('sort_d' . $this->tableArr['key'], '');
 
     }
 
+
+    protected function buildQuery()
+    {
+        $query = Eloquent::unserialize(Crypt::decrypt($this->tableArr['Query']));
+
+        if ($this->sortBy !== '') {
+            $query->orderBy($this->sortBy, $this->sortDirection);
+        } else {
+            $query->orderBy('id');
+        }
+
+
+        $query->where(function($q) {
+            foreach ($this->tableArr['Columns'] as $key => $column) {
+
+                if (Str::contains($key, '.') === false) {
+                    $q->orWhere($key, 'LIKE', '%'.$this->search.'%');
+                } else {
+                    $exploted = explode('.', $key);
+                    $q->orWhereHas($exploted[0], function ($re) use ($exploted){
+                        $re->where($exploted[1], 'LIKE', '%'.$this->search.'%');
+                    });
+                }
+            }
+        });
+
+
+
+        return $query;
+    }
+
+
     public function render()
     {
+        /*
         $perPage = $this->perPage;
-
         $collection = $this->queryStruct();
-
         $items = $collection->forPage($this->page, $perPage);
-
         $paginator = new LengthAwarePaginator($items, $collection->count(), $perPage, $this->page);
-
         $this->resetPage();
+        */
 
-        return view('datatable::main', ['dataResult' => $paginator] );
+        return view('datatable::main', ['dataResult' => $this->buildQuery()->paginate($this->perPage)]);
 
     }
 }

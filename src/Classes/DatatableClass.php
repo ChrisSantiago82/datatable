@@ -3,6 +3,8 @@
 
 namespace Chrissantiago82\Datatable\Classes;
 
+use Laravie\SerializesQuery\Eloquent;
+use Illuminate\Support\Facades\Crypt;
 
 class DatatableClass
 {
@@ -147,6 +149,11 @@ class DatatableClass
     public function getDatatableStruct()
     {
         return $this->Result;
+    }
+
+    public function addQuery($query)
+    {
+        $this->Result['Query'] = Crypt::encrypt(Eloquent::serialize($query));
     }
 
 }
