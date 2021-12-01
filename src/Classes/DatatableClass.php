@@ -85,8 +85,7 @@ class DatatableClass
 
     public function withCount($relation)
     {
-        $newArray[] = $relation;
-        $this->Result['withCount'] = $newArray;
+        $this->Result['withCount'][] = $relation;
     }
 
     public function formatLastRecord($key, $value, $format)

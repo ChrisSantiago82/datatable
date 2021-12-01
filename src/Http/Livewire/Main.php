@@ -31,7 +31,7 @@ class Main extends Component
     public $showExcel;
     public $tableArr = [];
     public $showOptions;
-    public $counterResult = [];
+    public $counterResult;
     public $excelFormat = [];
     public $OptionsPosition;
 
@@ -81,8 +81,8 @@ class Main extends Component
                 $this->OptionsPosition = $itemArr;
             }
 
-            if ($itemKey == 'Counter') {
-                $this->loadDataCounter();
+            if ($itemKey == 'withCount') {
+                $this->counterResult = $itemArr;
             }
 
             if ($itemKey == 'ExcelFormat') {
@@ -169,20 +169,6 @@ class Main extends Component
         return $newQuery;
     }
 
-    public function loadDataCounter()
-    {
-        foreach ($this->Data as $itemKey => $dataValue) {
-            if ($dataValue['type'] == 'counter') {
-                $counterData = $dataValue['value'];
-
-                foreach ($this->query as $query) {
-                    $this->counterResult[$query->$itemKey] = $query->$counterData->count();
-                }
-            }
-
-        }
-    }
-
     public function Pagination($page)
     {
         $this->perPage = $page;
@@ -227,11 +213,11 @@ class Main extends Component
 
     public function downloadExcel()
     {
-        $query = $this->queryStruct();
+        $query = $this->buildQuery();
 
         //Full Collection
 
-        return Excel::download(new ExportExcelClass('full_collection', $query, $this->Data, $this->Exceptions, $this->excelFormat), now()->toDateString() . ' excel.xlsx');
+        return Excel::download(new ExportExcelClass('full_collection', $query->get(), $this->Data, $this->Exceptions, $this->excelFormat), now()->toDateString() . ' excel.xlsx');
     }
 
     public function saveFilterToSession()
@@ -297,7 +283,7 @@ class Main extends Component
             }
 
         });
-        
+
         return $query;
     }
 
