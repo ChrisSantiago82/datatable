@@ -186,7 +186,7 @@ class Main extends Component
     public function Pagination($page)
     {
         $this->perPage = $page;
-        $this->queryStruct();
+//        $this->queryStruct();
     }
 
     public function sortBy($field)
@@ -199,7 +199,7 @@ class Main extends Component
 
         $this->sortBy = $field;
 
-        $this->queryStruct();
+        $this->buildQuery();
         $this->saveFilterSortToSession();
 
         return $this->sortBy;
@@ -263,10 +263,23 @@ class Main extends Component
     {
         $query = Eloquent::unserialize(Crypt::decrypt($this->tableArr['Query']));
 
-        if ($this->sortBy !== '') {
-            $query->orderBy($this->sortBy, $this->sortDirection);
-        } else {
-            $query->orderBy('id');
+//        if ($this->sortBy !== '') {
+//            $query->orderBy($this->sortBy, $this->sortDirection);
+//        } else {
+//            $query->orderBy('id');
+//        }
+
+        if(count($this->filter) > 0)
+        {
+            $key = key($this->filter);
+            $value = reset($this->filter);
+
+            if($value !== null)
+            {
+                $query->where($key, 'LIKE', '%'. $value. '%');
+            }else{
+                $query->where($key, '=', null);
+            }
         }
 
 
@@ -282,10 +295,9 @@ class Main extends Component
                     });
                 }
             }
+
         });
-
-
-
+        
         return $query;
     }
 
