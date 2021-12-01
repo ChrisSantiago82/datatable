@@ -63,6 +63,13 @@ class DatatableClass
         $this->Result['Columns'][$key]['format'] = $format;
     }
 
+    public function formatPhone($key, $pattern, $replacement)
+    {
+        $this->Result['Columns'][$key]['type'] = 'phone';
+        $this->Result['Columns'][$key]['pattern'] = $pattern;
+        $this->Result['Columns'][$key]['replacement'] = $replacement;
+    }
+
     public function formatLink($key, $event, $title)
     {
         $this->Result['Columns'][$key]['type'] = 'link';

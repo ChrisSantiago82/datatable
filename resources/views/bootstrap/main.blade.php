@@ -121,8 +121,17 @@
                                      {{$val}}
                                  </a>
                              </td>
-                         @elseif ($itemName['type'] == 'counter')
-                             @include('datatable::counter-option', ['id' => $item->id])
+                         @elseif ($itemName['type'] == 'phone')
+                             @php
+                                 $number = preg_replace("/[^\d]/","",$val);
+
+                                if(strlen($number) == 10) {
+                                    $number = preg_replace($itemName['pattern'], $itemName['replacement'], $number);
+                                }
+                             @endphp
+                            <td>
+                                {{$number}}
+                            </td>
                          @elseif ($itemName['type'] == 'lastRecord')
                              @include('datatable::lastrecord-option', ['id' => $item->id])
 
