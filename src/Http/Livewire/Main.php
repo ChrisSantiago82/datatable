@@ -297,8 +297,10 @@ class Main extends Component
         $paginator = new LengthAwarePaginator($items, $collection->count(), $perPage, $this->page);
         $this->resetPage();
         */
+        $collection = $this->buildQuery()->paginate($this->perPage);
+        $this->resetPage();
 
-        return view('datatable::main', ['dataResult' => $this->buildQuery()->paginate($this->perPage)]);
+        return view('datatable::main', ['dataResult' => $collection]);
 
     }
 }
