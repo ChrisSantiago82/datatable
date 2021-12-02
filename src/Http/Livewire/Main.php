@@ -81,10 +81,6 @@ class Main extends Component
                 $this->OptionsPosition = $itemArr;
             }
 
-            if ($itemKey == 'withCount') {
-                $this->counterResult = $itemArr;
-            }
-
             if ($itemKey == 'ExcelFormat') {
                 $this->excelFormat = $itemArr;
             }
@@ -99,80 +95,9 @@ class Main extends Component
 
     }
 
-    public function queryStruct()
-    {
-        return;
-
-        $newQuery = $this->queryResult;
-
-        if ($this->sortBy !== '') {
-            if ($this->sortDirection == 'asc') {
-                $newQuery = $this->query->sortBy($this->sortBy, SORT_NATURAL | SORT_FLAG_CASE);
-
-            } else {
-                $newQuery = $this->query->sortByDesc($this->sortBy, SORT_NATURAL | SORT_FLAG_CASE);
-            }
-        } else {
-            $newQuery = $this->query->sortBy('id');
-        }
-
-        if ($this->search !== null and $this->search != '') {
-
-            $newQuery = $newQuery->filter(function ($value, $key) {
-
-                $search = strtolower($this->search);
-
-                foreach ($this->Data as $data => $data2) {
-                    if (Str::contains($data, '.')) {
-                        $collection = Str::of($data)->explode('.');
-                        $val = $value;
-
-                        foreach ($collection as $rel) {
-                            if ($val === null) {
-                                break;
-                            }
-                            $val = optional($val)->$rel;
-                        }
-                        if (strpos(strtolower((string)$val), $search) !== false) {
-                            return true;
-                        }
-
-                    } else {
-                        if (strpos(strtolower((string)$value->$data), $search) !== false) {
-                            return true;
-                        }
-                    }
-                }
-
-                return false;
-            });
-        }
-
-        if ($this->filter != null) {
-            foreach ($this->filter as $itemKey => $itemValue) {
-                if ($itemValue !== null) {
-                    $newQuery = $newQuery->where($itemKey, '=', $itemValue);
-                } else {
-                    $newQuery = $newQuery->where($itemKey, '!=', $itemValue);
-                }
-
-            }
-        }
-
-        //Load Counts
-        if (isset($this->tableArr['withCount'])) {
-            foreach ($this->tableArr['withCount'] as $withcount) {
-                $newQuery->loadCount($withcount);
-            }
-        }
-
-        return $newQuery;
-    }
-
     public function Pagination($page)
     {
         $this->perPage = $page;
-//        $this->queryStruct();
     }
 
     public function sortBy($field)
@@ -303,17 +228,9 @@ class Main extends Component
 
     public function render()
     {
-        /*
-        $perPage = $this->perPage;
-        $collection = $this->queryStruct();
-        $items = $collection->forPage($this->page, $perPage);
-        $paginator = new LengthAwarePaginator($items, $collection->count(), $perPage, $this->page);
-        $this->resetPage();
-        */
-        $collection = $this->buildQuery()->paginate($this->perPage);
+        $query = $this->buildQuery()->paginate($this->perPage);
         $this->resetPage();
 
-        return view('datatable::main', ['dataResult' => $collection]);
-
+        return view('datatable::main', ['dataResult' => $query]);
     }
 }
