@@ -241,7 +241,6 @@ class Main extends Component
     {
         $this->sortBy = Session::get('sort_' . $this->tableArr['key'], '');
         $this->sortDirection = Session::get('sort_d' . $this->tableArr['key'], '');
-
     }
 
 
@@ -249,40 +248,54 @@ class Main extends Component
     {
         $query = Eloquent::unserialize(Crypt::decrypt($this->tableArr['Query']));
 
-//        if ($this->sortBy !== '') {
-//            $query->orderBy($this->sortBy, $this->sortDirection);
-//        } else {
-//            $query->orderBy('id');
-//        }
-
-        if(count($this->filter) > 0)
-        {
+        if (count($this->filter) > 0) {
             $key = key($this->filter);
             $value = reset($this->filter);
 
-            if($value !== null)
-            {
-                $query->where($key, 'LIKE', '%'. $value. '%');
-            }else{
+            if ($value !== null) {
+                $query->where($key, 'LIKE', '%' . $value . '%');
+            } else {
                 $query->where($key, '=', null);
             }
         }
 
 
-        $query->where(function($q) {
-            foreach ($this->tableArr['Columns'] as $key => $column) {
+        if ($this->search !== null and $this->search != '') {
 
-                if (Str::contains($key, '.') === false) {
-                    $q->orWhere($key, 'LIKE', '%'.$this->search.'%');
-                } else {
-                    $exploted = explode('.', $key);
-                    $q->orWhereHas($exploted[0], function ($re) use ($exploted){
-                        $re->where($exploted[1], 'LIKE', '%'.$this->search.'%');
-                    });
+            $baseTableName = $query->newModelInstance()->getTable();
+
+            $query->where(function ($q) use($baseTableName) {
+                foreach ($this->tableArr['Columns'] as $key => $column) {
+                    if (Str::contains($key, '.') === false) {
+                        $q->orWhere($baseTableName.'.'.$key, 'LIKE', '%' . $this->search . '%');
+                    } else {
+                        $exploted = explode('.', $key);
+                        $q->orWhereHas($exploted[0], function ($re) use ($exploted) {
+                            $re->where($exploted[1], 'LIKE', '%' . $this->search . '%');
+                        });
+                    }
                 }
-            }
+            });
+        }
 
-        });
+        if ($this->sortBy !== '') {
+
+            if (Str::contains($this->sortBy, '.') === false) {
+                $query->orderBy($this->sortBy, $this->sortDirection);
+            } else {
+                $baseTableName = $query->newModelInstance()->getTable();
+                $relatedModelName = Str::before($this->sortBy, '.');
+                $relatedSearchField = Str::afterLast($this->sortBy, '.');
+                $relatedModel = '\\App\\Models\\'.$relatedModelName;
+                $relatedTableName = (new $relatedModel)->getTable();
+                $query->select($baseTableName.'.*');
+                $query->joinRelation($relatedModelName);
+                $query->orderBy($relatedTableName . '.'.$relatedSearchField, $this->sortDirection);
+            }
+        } else {
+            $query->orderBy('id');
+        }
+
 
         return $query;
     }
