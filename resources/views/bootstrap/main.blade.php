@@ -63,12 +63,12 @@
         @foreach($Data as $itemKey => $itemName)
                 @if ($itemName['type'] == 'number')
 
-                    <th style="text-align: right" wire:click="sortBy(`{{$itemKey}}`)" style="cursor: pointer">
+                    <th class="text-nowrap" wire:click="sortBy(`{{$itemKey}}`)" style="cursor: pointer;text-align: right">
                         {{$itemName['columnName']}}
                         @include('datatable::sort-icon', ['field'=> $itemKey])
                     </th>
                 @else
-                    <th wire:click="sortBy(`{{$itemKey}}`)" style="cursor: pointer">
+                    <th class="text-nowrap" wire:click="sortBy(`{{$itemKey}}`)" style="cursor: pointer">
                         {{$itemName['columnName']}}
                         @include('datatable::sort-icon', ['field'=> $itemKey])
                     </th>
@@ -108,7 +108,7 @@
                         @if ($itemName['type'] === null)
                             <td>{{$val}}</td>
                          @elseif ($itemName['type'] == 'limit')
-                             <td>{{Str::limit($val, $itemName['limit'])}}</td>
+                             <td>{{Str::limit($val, $itemName['limit'], '.')}}</td>
                         @elseif ($itemName['type'] == 'date')
                             <td>{{optional($val)->format($itemName['format'])}}</td>
                         @elseif ($itemName['type'] == 'email')
@@ -118,7 +118,11 @@
                          @elseif ($itemName['type'] == 'link')
                              <td style="color:#0e1950;  text-decoration: underline;">
                                  <a style="padding-right: 15px;cursor: pointer;" wire:click="emitOptions(`{{$itemName['event']}}`, {{$item->id}})" data-bs-toggle="tooltip" data-bs-placement="top" title="{{$itemName['title']}}">
+                                     @if($itemName['limit'] == null)
                                      {{$val}}
+                                     @else
+                                         {{Str::limit($val, $itemName['limit'], '.')}}
+                                     @endif
                                  </a>
                              </td>
                          @elseif ($itemName['type'] == 'phone')

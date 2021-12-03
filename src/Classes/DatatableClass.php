@@ -70,11 +70,12 @@ class DatatableClass
         $this->Result['Columns'][$key]['replacement'] = $replacement;
     }
 
-    public function formatLink($key, $event, $title)
+    public function formatLink($key, $event, $title, $limit = null)
     {
         $this->Result['Columns'][$key]['type'] = 'link';
         $this->Result['Columns'][$key]['event'] = $event;
         $this->Result['Columns'][$key]['title'] = $title;
+        $this->Result['Columns'][$key]['limit'] = $limit;
     }
 
 
