@@ -63,6 +63,12 @@ class DatatableClass
         $this->Result['Columns'][$key]['format'] = $format;
     }
 
+    public function formatPassword($key, $format)
+    {
+        $this->Result['Columns'][$key]['type'] = 'password';
+        $this->Result['Columns'][$key]['format'] = $format;
+    }
+
     public function formatPhone($key, $pattern, $replacement)
     {
         $this->Result['Columns'][$key]['type'] = 'phone';
