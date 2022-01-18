@@ -91,9 +91,21 @@ class DatatableClass
         $this->Result['Columns'][$key]['event'] = $event;
     }
 
+    public function formatStatusBtn($key, $event)
+    {
+        $this->Result['Columns'][$key]['type'] = 'status';
+        $this->Result['Columns'][$key]['event'] = $event;
+    }
+
     public function formatCounter($key, $value)
     {
         $this->Result['Columns'][$key]['type'] = 'counter';
+        $this->Result['Columns'][$key]['value'] = $value;
+    }
+
+    public function formatBoolean($key, $value)
+    {
+        $this->Result['Columns'][$key]['type'] = 'boolean';
         $this->Result['Columns'][$key]['value'] = $value;
     }
 

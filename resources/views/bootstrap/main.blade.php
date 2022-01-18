@@ -117,6 +117,14 @@
                             <td style="text-align: right">{{number_format((float)$val,2,'.',"'")}}</td>
                         @elseif ($itemName['type'] == 'password')
                             <td style="-webkit-text-security: disc;">{{number_format((float)$val,2,'.',"'")}}</td>
+                        @elseif ($itemName['type'] == 'boolean')
+                             <td>
+                                 @if($val)
+                                     True
+                                 @else
+                                    False
+                                 @endif
+                             </td>
                          @elseif ($itemName['type'] == 'link')
                              <td style="color:#0e1950;  text-decoration: underline;">
                                  <a style="padding-right: 15px;cursor: pointer;" wire:click="emitOptions(`{{$itemName['event']}}`, {{$item->id}})" data-bs-toggle="tooltip" data-bs-placement="top" title="{{$itemName['title']}}">
@@ -143,6 +151,9 @@
 
                          @elseif ($itemName['type'] == 'disable')
                             @include('datatable::status-option', ['optionKey' => $itemKey, 'itemValue' => $item->$itemKey, 'event' => $itemName['event'], 'id'=> $item->id])
+
+                         @elseif ($itemName['type'] == 'status')
+                             @include('datatable::bool-status', ['optionKey' => $itemKey, 'itemValue' => $item->$itemKey, 'event' => $itemName['event'], 'id'=> $item->id])
                         @endif
 
                     @endforeach
