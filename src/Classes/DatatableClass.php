@@ -57,10 +57,13 @@ class DatatableClass
         $this->Result['Columns'][$key]['format'] = $format;
     }
 
-    public function formatNumber($key, $format)
+    public function formatNumber($key, $decimal = null, $decimal_separator = null, $thousand_separator = null)
     {
         $this->Result['Columns'][$key]['type'] = 'number';
-        $this->Result['Columns'][$key]['format'] = $format;
+        $this->Result['Columns'][$key]['decimal'] = $decimal;
+        $this->Result['Columns'][$key]['decimal_separator'] = $decimal_separator;
+        $this->Result['Columns'][$key]['thousand_separator'] = $thousand_separator;
+
     }
 
     public function formatPassword($key, $format)

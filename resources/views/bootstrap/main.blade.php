@@ -114,9 +114,9 @@
                         @elseif ($itemName['type'] == 'email')
                             <td><a href="mailto:{{$val}}" target="_top">{{$val}}</a></td>
                         @elseif ($itemName['type'] == 'number')
-                            <td style="text-align: right">{{number_format((float)$val,2,'.',"'")}}</td>
+                            <td style="text-align: right">{{number_format((float)$val, $itemName['decimal'], $itemName['decimal_separator'], $itemName['thousand_separator'])}}</td>
                         @elseif ($itemName['type'] == 'password')
-                            <td style="-webkit-text-security: disc;">{{number_format((float)$val,2,'.',"'")}}</td>
+                            <td style="-webkit-text-security: disc;">{{$val}}</td>
                         @elseif ($itemName['type'] == 'boolean')
                              <td>
                                  @if($val)
