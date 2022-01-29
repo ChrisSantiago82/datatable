@@ -139,6 +139,11 @@ class DatatableClass
         $this->Result['Options'] = $value;
     }
 
+    public function tableAvailableFilter($value)
+    {
+        $this->Result['Filter'] = $value;
+    }
+
     public function tablePositionOptions($value)
     {
         $this->Result['Position'] = $value;

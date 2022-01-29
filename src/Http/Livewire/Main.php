@@ -81,6 +81,10 @@ class Main extends Component
                 $this->OptionsPosition = $itemArr;
             }
 
+            if ($itemKey == 'Filter') {
+                $this->filter = $itemArr;
+            }
+
             if ($itemKey == 'ExcelFormat') {
                 $this->excelFormat = $itemArr;
             }
