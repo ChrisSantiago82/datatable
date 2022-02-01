@@ -48,6 +48,7 @@ class Main extends Component
         $this->getFilterSortFromSession();
         $this->tableStruct();
         $this->getFilterFromSession();
+        $this->getFilterPageFromSession();
     }
 
     public function tableStruct()
@@ -102,6 +103,7 @@ class Main extends Component
     public function Pagination($page)
     {
         $this->perPage = $page;
+        $this->saveFilterPageToSession();
     }
 
     public function sortBy($field)
@@ -172,6 +174,15 @@ class Main extends Component
         $this->sortDirection = Session::get('sort_d' . $this->tableArr['key'], '');
     }
 
+    public function saveFilterPageToSession()
+    {
+        Session::put('page_' . $this->tableArr['key'], $this->perPage);
+    }
+
+    public function getFilterPageFromSession()
+    {
+        $this->perPage = Session::get('page_' . $this->tableArr['key'], 30);
+    }
 
     protected function buildQuery()
     {
