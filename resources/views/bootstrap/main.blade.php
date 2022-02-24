@@ -67,6 +67,10 @@
                         {{$itemName['columnName']}}
                         @include('datatable::sort-icon', ['field'=> $itemKey])
                     </th>
+                @elseif($itemName['type'] == 'notSort')
+                    <th class="text-nowrap">
+                        {{$itemName['columnName']}}
+                    </th>
                 @else
                     <th class="text-nowrap" wire:click="sortBy(`{{$itemKey}}`)" style="cursor: pointer">
                         {{$itemName['columnName']}}
@@ -150,6 +154,9 @@
                             <td>
                                 {{$number}}
                             </td>
+
+                        @elseif($itemName['type'] == 'notSort')
+                           <td>{{$val}}</td>
                          @elseif ($itemName['type'] == 'lastRecord')
                              @include('datatable::lastrecord-option', ['id' => $item->id])
 

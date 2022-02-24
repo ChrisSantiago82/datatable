@@ -175,6 +175,11 @@ class DatatableClass
         $this->Result['DefaultSort'][$key] = $value;
     }
 
+    public function disableSortableItem($key)
+    {
+        $this->Result['Columns'][$key]['type'] = 'notSort';
+    }
+
     public function makeExcel($query)
     {
         return $query;
