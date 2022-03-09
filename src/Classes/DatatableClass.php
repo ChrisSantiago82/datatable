@@ -19,6 +19,7 @@ class DatatableClass
         $this->Result['Columns'][$key]['event'] = null;
         $this->Result['Columns'][$key]['value'] = null;
         $this->Result['Columns'][$key]['limit'] = null;
+        $this->Result['Columns'][$key]['sort'] = true;
         $this->buildKey($columnName);
     }
 
@@ -177,7 +178,7 @@ class DatatableClass
 
     public function disableSortableItem($key)
     {
-        $this->Result['Columns'][$key]['type'] = 'notSort';
+        $this->Result['Columns'][$key]['sort'] = false;
     }
 
     public function makeExcel($query)
