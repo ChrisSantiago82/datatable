@@ -1,7 +1,7 @@
 <div>
     <div class="row col-md-12">
         <div class="col form-inline" style="margin-bottom: 15px">
-            <span>Show: &nbsp;</span>
+            <span>{{__('Show:')}} &nbsp;</span>
             <div class="col-md-2" style="margin-top: 15px">
                 <a class="btn btn-light btn-xs dropdown-toggle" style="width: 140px;margin-bottom: 20px;" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="width: 20px">
                     @if($perPage == '10')
@@ -39,7 +39,7 @@
         </div>
 
         <div class="btn-group float-right" style="margin-right: -40px">
-            <input wire:model.debounce.300ms="search" class="form-control" placeholder="Search..." type="text">
+            <input wire:model.debounce.300ms="search" class="form-control" placeholder="{{__('Search')}}..." type="text">
         </div>
 
     </div>
@@ -47,7 +47,7 @@
     @if($showExcel)
     <div class="col-md-12" style="margin-top: -10px; margin-bottom: 10px;">
         <div class="btn-group">
-            <button class="btn btn-success btn-xs" wire:click="downloadExcel">Download Excel</button>
+            <button class="btn btn-success btn-xs" wire:click="downloadExcel">{{__('Download Excel')}}</button>
         </div>
     </div>
     @endif
