@@ -206,13 +206,15 @@ class Main extends Component
 
             $query->where(function ($q) use($baseTableName) {
                 foreach ($this->tableArr['Columns'] as $key => $column) {
-                    if (Str::contains($key, '.') === false) {
-                        $q->orWhere($baseTableName.'.'.$key, 'LIKE', '%' . $this->search . '%');
-                    } else {
-                        $exploted = explode('.', $key);
-                        $q->orWhereHas($exploted[0], function ($re) use ($exploted) {
-                            $re->where($exploted[1], 'LIKE', '%' . $this->search . '%');
-                        });
+                    if($column['search'] === true) {
+                        if (Str::contains($key, '.') === false) {
+                            $q->orWhere($baseTableName . '.' . $key, 'LIKE', '%' . $this->search . '%');
+                        } else {
+                            $exploted = explode('.', $key);
+                            $q->orWhereHas($exploted[0], function ($re) use ($exploted) {
+                                $re->where($exploted[1], 'LIKE', '%' . $this->search . '%');
+                            });
+                        }
                     }
                 }
             });
