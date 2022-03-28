@@ -47,7 +47,7 @@
     @if($showExcel)
     <div class="col-md-12" style="margin-top: -10px; margin-bottom: 10px;">
         <div class="btn-group">
-            <button class="btn btn-success btn-xs" wire:click="downloadExcel">{{__('Download Excel')}}</button>
+            <button class="btn btn-secondary btn-xs" wire:click="downloadExcel">{{__('Download Excel')}}</button>
         </div>
     </div>
     @endif
