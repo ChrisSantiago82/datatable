@@ -21,7 +21,7 @@ class DatatableClass
         $this->Result['Columns'][$key]['limit'] = null;
         $this->Result['Columns'][$key]['sort'] = true;
         $this->Result['Columns'][$key]['search'] = true;
-		$this->Result['Columns'][$key]['model'] = model;
+		$this->Result['Columns'][$key]['model'] = $model;
 		
 
         $this->buildKey($columnName);
