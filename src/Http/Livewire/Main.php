@@ -224,6 +224,15 @@ class Main extends Component
 
             if (Str::contains($this->sortBy, '.') === false) {
                 $query->orderBy($this->sortBy, $this->sortDirection);
+            } elseif($this->Data[$this->sortBy]['model'] !== null) {
+                $baseTableName = $query->newModelInstance()->getTable();
+                $relatedModelName = Str::before($this->sortBy, '.');
+                $relatedSearchField = Str::afterLast($this->sortBy, '.');
+                $relatedModel = '\\App\\Models\\'.$this->Data[$this->sortBy]['model'];
+                $relatedTableName = (new $relatedModel)->getTable();
+                $query->select($baseTableName.'.*');
+                $query->joinRelation($relatedModelName);
+                $query->orderBy($relatedTableName . '.'.$relatedSearchField, $this->sortDirection);
             } else {
                 $baseTableName = $query->newModelInstance()->getTable();
                 $relatedModelName = Str::before($this->sortBy, '.');
