@@ -17,7 +17,9 @@ class ExportExcelClass implements FromCollection, WithHeadings
     private $collection_formats;
     private $exceptions;
 
-    public function __construct($type, $collection_to_export, $collection_headings = null, $exceptions = null, $collection_format = null) {
+
+    public function __construct($type, $collection_to_export, $collection_headings = null, $exceptions = null, $collection_format = null)
+    {
         $this->type = $type;
         $this->collection = $collection_to_export;
         $this->headings = $collection_headings;
@@ -27,71 +29,51 @@ class ExportExcelClass implements FromCollection, WithHeadings
         $this->getExportedCollection();
     }
 
+
     public function getExportedCollection()
     {
         $collectionKeys = array_keys($this->headings);
 
-        $subCollection = $this->collection->map(function ($collectionItem, $collectionKey) use ($collectionKeys) {
-            $result = [];
+
+        $newCollectionItem = [];
+
+
+        foreach ($this->collection as $collection) {
 
             foreach ($this->headings as $itemKey => $itemValue) {
-                $collection = Str::of($itemKey)->explode('.');
-                $val = $collectionItem;
 
-                foreach ($collection as $rel) {
-                    if ($val === null) {
-                        break;
+                if (Str::contains($itemKey, '.')) {
+                    $cols = Str::of($itemKey)->explode('.');
+
+                    $colnew = $collection;
+                    foreach ($cols as $col) {
+                        if ($colnew !== null) {
+                            $colnew = $colnew->$col;
+                        }
                     }
-                    $val = optional($val)->$rel;
 
-                    if($itemValue['type'] == 'date')
-                    {
-                        $result[$itemKey] = $val->format($itemValue['format']);
-                    }else{
-                        $result[$itemKey] = $val;
-                    }
-                }
+                    $result[$itemKey] = $colnew;
 
-            }
-            $collectionResult = collect($result);
-
-            $newCollectionItem = collect($collectionItem);
-
-            foreach ($this->collection_formats as $keyFormat => $value)
-            {
-                if($value['type'] == 'date')
-                {
-                    $newCollectionItem[$keyFormat] = $collectionItem->$keyFormat->format($value['format']);
+                } elseif ($itemValue['type'] == 'date') {
+                    $result[$itemKey] = optional($collection->$itemKey)->format($itemValue['format']);
+                } else {
+                    $result[$itemKey] = $collection->$itemKey;
                 }
             }
 
-            if($this->type == 'full_collection') {
-                $exceptions = array_keys($this->exceptions);
+            $newCollectionItem[] = $result;
+        }
 
-                $mergeCollection = collect($newCollectionItem)->except($collectionKeys)->except($exceptions);
-
-                $fullCollection = $collectionResult->merge($mergeCollection);
-                $this->collectionHeadings = $fullCollection->keys()->toArray();
-
-
-                return $fullCollection->all();
-
-            }
-            elseif($this->type == 'merged_collection')
-            {
-                return $collectionResult->all();
-            }
-
-        });
-
-        $this->headings = $this->collectionHeadings;
-        $this->collection = $subCollection;
+        $this->headings = $collectionKeys;
+        $this->collection = collect($newCollectionItem);
     }
+
 
     public function collection()
     {
         return $this->collection;
     }
+
 
     public function headings(): array
     {
